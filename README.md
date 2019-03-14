@@ -1,7 +1,7 @@
-<table>
+<table border="0">
   <tr>
-    <td><img src="MathCat.bmp" alt="Gizmo" width="100" height="100"></td>
-    <td><h1>Math Cat</h1><h2>Calculator application</h2></td>
+    <td border="0"><img src="MathCat.bmp" alt="Gizmo" width="150" height="150"></td>
+    <td border="0"><h1>Math Cat</h1><h2>Calculator application</h2></td>
   </tr>
 </table>
   
