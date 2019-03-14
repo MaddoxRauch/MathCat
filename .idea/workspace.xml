@@ -39,6 +39,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
+          <entry key="Python Console" value="29" />
           <entry key="dummy" value="220" />
           <entry key="py" value="19885" />
           <entry key="txt" value="48" />
@@ -47,7 +48,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="268" />
-          <entry key="Python" value="1742" />
+          <entry key="Python" value="1771" />
           <entry key="Scratch" value="18143" />
         </counts>
       </usages-collector>
@@ -80,15 +81,6 @@
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/latex2sympy/process_latex.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -134,6 +126,11 @@
             <path>
               <item name="calcapp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="calcapp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name=".idea" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -345,8 +342,8 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.41814947" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32740214" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="9" sideWeight="0.5023847" side_tool="true" visible="true" weight="0.41459075" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32740214" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007949" side_tool="true" weight="0.32740214" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.49920508" visible="true" weight="0.32740214" />
       <window_info anchor="bottom" id="Tool Output" order="11" weight="0.3291815" />
       <window_info active="true" anchor="bottom" id="ANTLR Preview" order="12" visible="true" weight="0.3291815" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
