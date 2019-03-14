@@ -1,8 +1,8 @@
-<table border="0">
+<table cellpadding="0" cellspacing ="0">
   <tbody>
     <tr>
       <td><img src="MathCat.bmp" alt="Gizmo" width="150" height="150"></td>
-      <td><h1>Math Cat</h1><h2>Calculator application</h2></td>
+      <td><h1>Math Cat</h1><h3>Calculator application</h3></td>
     </tr>
   </tbody>
 </table>
