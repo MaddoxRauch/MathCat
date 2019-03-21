@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7696acba-2689-4246-9cc1-df8806302f12" name="Default Changelist" comment="" />
+    <list default="true" id="7696acba-2689-4246-9cc1-df8806302f12" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calcapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/calcapp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluator.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/im.png" beforeDir="false" afterPath="$PROJECT_DIR$/im.png" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,15 +29,19 @@
         <counts>
           <entry key="im" value="1" />
           <entry key="iml" value="1" />
-          <entry key="png" value="1" />
-          <entry key="py" value="16" />
+          <entry key="jpg" value="1" />
+          <entry key="png" value="5" />
+          <entry key="py" value="23" />
+          <entry key="txt" value="1" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="Python" value="3" />
+          <entry key="Image" value="5" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Python" value="10" />
           <entry key="Scratch" value="15" />
           <entry key="XML" value="1" />
         </counts>
@@ -41,14 +50,14 @@
         <counts>
           <entry key="Python Console" value="29" />
           <entry key="dummy" value="220" />
-          <entry key="py" value="19885" />
+          <entry key="py" value="21774" />
           <entry key="txt" value="48" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="268" />
-          <entry key="Python" value="1771" />
+          <entry key="Python" value="3660" />
           <entry key="Scratch" value="18143" />
         </counts>
       </usages-collector>
@@ -62,22 +71,27 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/calcapp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4182">
-              <caret line="277" selection-start-line="277" selection-end-line="277" />
+            <state relative-caret-position="-1070">
+              <caret line="45" column="54" lean-forward="true" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
-                <marker date="1552369775085" expanded="true" signature="7288:7289" ph="..." />
-                <marker date="1552369775085" expanded="true" signature="7805:7806" ph="..." />
+                <marker date="1553205333599" expanded="true" signature="7300:7301" ph="..." />
+                <marker date="1553205333599" expanded="true" signature="7933:7934" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/im.png">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evaluator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
+            <state relative-caret-position="85">
+              <caret line="5" column="18" lean-forward="true" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -102,21 +116,22 @@
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/calcapp.py" />
-        <option value="$PROJECT_DIR$/calcapp.py" />
-        <option value="$PROJECT_DIR$/evaluator.py" />
         <option value="$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/latex2sympy/process_latex.py" />
+        <option value="$PROJECT_DIR$/sandbox.py" />
+        <option value="$PROJECT_DIR$/evaluator.py" />
+        <option value="$PROJECT_DIR$/calcapp.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3" />
-    <option name="y" value="3" />
-    <option name="width" value="1857" />
+    <option name="x" value="403" />
+    <option name="y" value="1" />
+    <option name="width" value="1080" />
     <option name="height" value="804" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
@@ -126,11 +141,6 @@
             <path>
               <item name="calcapp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-            <path>
-              <item name="calcapp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name=".idea" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -152,8 +162,8 @@
   <component name="PropertiesComponent">
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="full.screen.before.presentation.mode" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/calcapp.py" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../emailadapter" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -290,9 +300,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.calcapp" />
-        <item itemvalue="Python.process_latex" />
         <item itemvalue="Python.evaluator" />
         <item itemvalue="Python.Sandbox" />
+        <item itemvalue="Python.process_latex" />
         <item itemvalue="Python.Scratchers" />
       </list>
     </recent_temporary>
@@ -329,21 +339,22 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49644127" visible="true" weight="0.13036565" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49644127" weight="0.13036565" />
       <window_info id="Structure" order="1" sideWeight="0.5035587" side_tool="true" weight="0.13036565" />
       <window_info id="Favorites" order="2" sideWeight="0.5035587" side_tool="true" weight="0.13036565" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49761525" weight="0.41459075" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49761525" weight="0.45017794" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39679715" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.41814947" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32740214" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007949" side_tool="true" weight="0.32740214" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.49920508" visible="true" weight="0.32740214" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5023847" side_tool="true" weight="0.1975089" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49920508" weight="0.32740214" />
       <window_info anchor="bottom" id="Tool Output" order="11" weight="0.3291815" />
       <window_info active="true" anchor="bottom" id="ANTLR Preview" order="12" visible="true" weight="0.3291815" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -381,9 +392,6 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/databasebuilder.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/spirograph.py" />
-    <entry file="file://$PROJECT_DIR$/im.png">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/im" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emailadapter.py" />
     <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
@@ -392,15 +400,18 @@
     <entry file="file://$PROJECT_DIR$/.idea/calcapp.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluator.py">
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sandbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state>
+          <caret lean-forward="true" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OCR_TEST.jpg">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/latex2sympy/process_latex.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -409,14 +420,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/antlr4/atn/ATNDeserializer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-23">
+          <caret line="104" selection-start-line="104" selection-end-line="104" />
+          <folding>
+            <element signature="e#193#214#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="18" lean-forward="true" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/im.png">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/calcapp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4182">
-          <caret line="277" selection-start-line="277" selection-end-line="277" />
+        <state relative-caret-position="-1070">
+          <caret line="45" column="54" lean-forward="true" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1552369775085" expanded="true" signature="7288:7289" ph="..." />
-            <marker date="1552369775085" expanded="true" signature="7805:7806" ph="..." />
+            <marker date="1553205333599" expanded="true" signature="7300:7301" ph="..." />
+            <marker date="1553205333599" expanded="true" signature="7933:7934" ph="..." />
           </folding>
         </state>
       </provider>

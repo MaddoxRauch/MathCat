@@ -11,6 +11,7 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Line, Color, Rectangle
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
+from kivy.uix.relativelayout import RelativeLayout
 import pytesseract
 try:
     from PIL import Image
@@ -170,11 +171,9 @@ class MathCharInputScreen(Screen):
         self.add_widget(math_char_input_layout)
 
 
-class MathCharInputLayout(GridLayout):
+class MathCharInputLayout(RelativeLayout):
     def __init__(self, **kwargs):
         super(MathCharInputLayout, self).__init__(**kwargs)
-        self.cols = 1
-        self.rows = 2
 
         blackboard = BlackBoard()
         self.add_widget(blackboard)
@@ -187,6 +186,7 @@ class MathCharInputLayout(GridLayout):
 
 class BlackBoard(Widget):
     """Class for character recognition canvas."""
+
     def on_touch_down(self, touch):
         """Selects the point on canvas for initial mark."""
         with self.canvas:
@@ -195,7 +195,8 @@ class BlackBoard(Widget):
 
     def on_touch_move(self, touch):
         """Continues the line from the initial mark made on_touch_down"""
-        touch.ud["line"].points += (touch.x, touch.y)
+        if touch.ud["line"].points[-2:] != [touch.x, touch.y]:  # If statement added to avoid duplicate points.
+            touch.ud["line"].points += (touch.x, touch.y)
 
     def clear_content(self):
         """Clears the canvas of all lines and marks made."""
@@ -207,14 +208,14 @@ class MathCharInputMenu(BoxLayout):
 
     def __init__(self, **kwargs):
         super(MathCharInputMenu, self).__init__(**kwargs)
-        self.equation_display = TextInput(size_hint=(0.6, 0.2))
+        self.equation_display = TextInput(size_hint=(0.6, 0.1))
         self.spacing = [3, 3]
         self.add_widget(self.equation_display)
 
-        self.submit_button = Button(text='Submit', size_hint=(0.2, 0.2), on_release=self.submit_math)
+        self.submit_button = Button(text='Submit', size_hint=(0.2, 0.1), on_release=self.submit_math)
         self.add_widget(self.submit_button)
 
-        self.equate_button = Button(text='Equate', size_hint=(0.2, 0.2), on_release=self.equate_math)
+        self.equate_button = Button(text='Equate', size_hint=(0.2, 0.1), on_release=self.equate_math)
         self.add_widget(self.equate_button)
 
     def equate_math(self, event):
@@ -228,10 +229,12 @@ class MathCharInputMenu(BoxLayout):
 
     def submit_math(self, event):
         """Handler for submit button. Converts the BlackBoard into png image to be interpreted by OCR Tesseract."""
+        print(self.draw_board.size)
+        print(self.size)
         self.draw_board.export_to_png('im.png')
         im = Image.open('im.png')
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
-        written_eq = pytesseract.image_to_string(im)
+        written_eq = pytesseract.image_to_string(im, lang="equ+eng")
         self.equation_display.text = written_eq
 
 
@@ -273,6 +276,7 @@ class EquationInputLayout(BoxLayout):
 class MathCat(App):
     def build(self):
         self.icon = 'MathCat.bmp'
+        self.title = 'Math Cat'
         main = MainWindow()
         return main
 
