@@ -12,6 +12,7 @@ from kivy.graphics import Line, Color, Rectangle
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.relativelayout import RelativeLayout
+import sympy as sp
 import pytesseract
 try:
     from PIL import Image
@@ -130,10 +131,17 @@ class BasicInputLayout(GridLayout):
 
     def equate_math(self, event):
         """Takes text from button pressed and adds the text to display"""
+        if self.display.text == "Invalid Input":
+            self.display.text = ''
         try:
             if event.text == '=':
-                equation_total = eval(self.display.text)
-                self.display.text = str(equation_total)
+                replacement_pairs = {'/': U'\u00f7', '*': U'\u00d7'}    # Characters that won't be recognized
+                modified_string = str(self.display.text)
+                for k, v in replacement_pairs.items():
+                    modified_string = modified_string.replace(v, k)
+                equation_total = sp.sympify(modified_string)
+                result_total = sp.pretty(sp.latex(equation_total.evalf()))
+                self.display.text = str(result_total)
             elif event.text == 'CLR':
                 self.display.text = ''
             elif event.text == str(U'\u21e6'):
@@ -148,6 +156,9 @@ class BasicInputLayout(GridLayout):
                     self.display.text = '(' + self.display.text + ')'
                 else:
                     self.display.text = self.display.text[1:-1]
+            elif event.text == '.':
+                if '.' not in self.display.text:
+                    self.display.text += event.text
             else:
                 self.display.text += event.text
         except SyntaxError:
@@ -229,8 +240,6 @@ class MathCharInputMenu(BoxLayout):
 
     def submit_math(self, event):
         """Handler for submit button. Converts the BlackBoard into png image to be interpreted by OCR Tesseract."""
-        print(self.draw_board.size)
-        print(self.size)
         self.draw_board.export_to_png('im.png')
         im = Image.open('im.png')
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
