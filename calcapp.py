@@ -188,8 +188,6 @@ class MathCharInputLayout(RelativeLayout):
 
         blackboard = BlackBoard()
         self.add_widget(blackboard)
-        self.canvas.before.add(Color(1, 0.72, 0.3))    # Orange
-        self.canvas.before.add(Rectangle(pos=self.pos, size=(5000, 5000)))
 
         math_char_input_menu = MathCharInputMenu(draw_board=blackboard)     # ObjectProperty added to pass BlackBoard in
         self.add_widget(math_char_input_menu)
@@ -197,6 +195,10 @@ class MathCharInputLayout(RelativeLayout):
 
 class BlackBoard(Widget):
     """Class for character recognition canvas."""
+    def __init__(self, **kwargs):
+        super(BlackBoard, self).__init__(**kwargs)
+        self.canvas.before.add(Color(1, 0.72, 0.3))     # Orange
+        self.canvas.before.add(Rectangle(pos=self.pos, size=(5000, 5000)))
 
     def on_touch_down(self, touch):
         """Selects the point on canvas for initial mark."""
@@ -242,8 +244,13 @@ class MathCharInputMenu(BoxLayout):
         """Handler for submit button. Converts the BlackBoard into png image to be interpreted by OCR Tesseract."""
         self.draw_board.export_to_png('im.png')
         im = Image.open('im.png')
+        base_width = 4000
+        w_percent = (base_width / float(im.size[0]))
+        h_size = int((float(im.size[1]) * float(w_percent)))
+        im_resize = im.resize((base_width, h_size), Image.ANTIALIAS)
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
-        written_eq = pytesseract.image_to_string(im, lang="equ+eng")
+        im_resize.save('im_resize.png')
+        written_eq = pytesseract.image_to_string(im_resize, lang="equ+eng")
         self.equation_display.text = written_eq
 
 
