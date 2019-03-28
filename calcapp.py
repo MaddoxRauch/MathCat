@@ -14,6 +14,7 @@ from kivy.core.window import Window
 from kivy.uix.relativelayout import RelativeLayout
 import sympy as sp
 import pytesseract
+import evaluator
 try:
     from PIL import Image
 except ImportError:
@@ -204,7 +205,7 @@ class BlackBoard(Widget):
         """Selects the point on canvas for initial mark."""
         with self.canvas:
             Color(0.25, 0.28, 0.28)
-            touch.ud["line"] = Line(points=(touch.x, touch.y), width=10)
+            touch.ud["line"] = Line(points=(touch.x, touch.y), width=6)
 
     def on_touch_move(self, touch):
         """Continues the line from the initial mark made on_touch_down"""
@@ -243,15 +244,18 @@ class MathCharInputMenu(BoxLayout):
     def submit_math(self, event):
         """Handler for submit button. Converts the BlackBoard into png image to be interpreted by OCR Tesseract."""
         self.draw_board.export_to_png('im.png')
-        im = Image.open('im.png')
-        base_width = 4000
-        w_percent = (base_width / float(im.size[0]))
-        h_size = int((float(im.size[1]) * float(w_percent)))
-        im_resize = im.resize((base_width, h_size), Image.ANTIALIAS)
+        threshold = 100
+        im = Image.open('im.png').convert('L').point(lambda x: 255 if x > threshold else 0, mode='1')
+        rgb_im = im.convert('RGB')
+        rgb_im.save('new_im.jpg', dpi=(500, 500))
+        new_im = Image.open('new_im.jpg')
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
-        im_resize.save('im_resize.png')
-        written_eq = pytesseract.image_to_string(im_resize, lang="equ+eng")
-        self.equation_display.text = written_eq
+        written_eq = pytesseract.image_to_string(new_im, lang="eng",
+    config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789")
+        print(written_eq)
+        new_eq = evaluator.EQ.examine(written_eq)   # Pre-processing before displayed.
+        self.equation_display.text = new_eq
+        print(new_eq)
 
 
 """
