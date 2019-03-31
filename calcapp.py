@@ -12,13 +12,11 @@ from kivy.graphics import Line, Color, Rectangle
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.relativelayout import RelativeLayout
+from PIL import Image
 import sympy as sp
 import pytesseract
 import evaluator
-try:
-    from PIL import Image
-except ImportError:
-    import Image
+
 
 """
 MainWindow
@@ -37,7 +35,7 @@ class MainWindow(GridLayout):
         self.rows = 2
         self.calc_type_selection = ScreenSelector()
         self.calc_type_menu = MainMenu(screen_manager=self.calc_type_selection, text='Basic', font_size='50sp',
-                                       size_hint=(1, 0.2), background_color=(0.6, 0.8, 0.9, 1))
+                                       size_hint=(1, 0.2), background_color=(0.5, 0.7, 0.8, 1))
         self.add_widget(self.calc_type_selection)
         self.add_widget(self.calc_type_menu)
 
@@ -68,7 +66,8 @@ class MainMenu(Button):
         self.drop_list = DropDown()
         types = ['Basic', 'Write', 'Equations']    # We have three main screens. May need to add a 'Graph' screen.
         for i in types:
-            button = Button(text=i, size_hint_y=None, height="100sp", background_color=(0.6, 0.8, 0.9, 1))
+            button = Button(text=i, font_size="50sp", size_hint_y=None, height="80sp",
+                            background_color=(0.6, 0.8, 0.9, 1))
             button.bind(on_release=lambda btn: self.drop_list.select(btn.text))
             self.drop_list.add_widget(button)
         self.bind(on_release=self.drop_list.open)
@@ -205,12 +204,18 @@ class BlackBoard(Widget):
         """Selects the point on canvas for initial mark."""
         with self.canvas:
             Color(0.25, 0.28, 0.28)
-            touch.ud["line"] = Line(points=(touch.x, touch.y), width=6)
+            if self.collide_point(*touch.pos):
+                touch.ud["line"] = Line(points=(touch.x, touch.y), width=6)
 
     def on_touch_move(self, touch):
         """Continues the line from the initial mark made on_touch_down"""
-        if touch.ud["line"].points[-2:] != [touch.x, touch.y]:  # If statement added to avoid duplicate points.
-            touch.ud["line"].points += (touch.x, touch.y)
+        if self.collide_point(*touch.pos):
+            try:
+                if touch.ud["line"].points[-2:] != [touch.x, touch.y]:  # If statement added to avoid duplicate points.
+                    touch.ud["line"].points += (touch.x, touch.y)
+            except KeyError:
+                pass
+
 
     def clear_content(self):
         """Clears the canvas of all lines and marks made."""
@@ -251,16 +256,14 @@ class MathCharInputMenu(BoxLayout):
         new_im = Image.open('new_im.jpg')
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
         written_eq = pytesseract.image_to_string(new_im, lang="eng",
-    config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789")
-        print(written_eq)
+    config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
         new_eq = evaluator.EQ.examine(written_eq)   # Pre-processing before displayed.
         self.equation_display.text = new_eq
-        print(new_eq)
 
 
 """
-EquationInputScreen
----EquationInputLayout
+OptionsScreen
+---OptionsLayout
 """
 
 
@@ -274,13 +277,12 @@ class EquationInputScreen(Screen):
 
 
 class EquationInputLayout(BoxLayout):
-    """Class to provide grid for keypad and numerical display"""
+    """Class to provide scroll view for options/settings menu"""
     def __init__(self, **kwargs):
         super(EquationInputLayout, self).__init__(**kwargs)
         self.cols = 1
         self.rows = 1
         scroll_menu = GridLayout(cols=1, size_hint_y=None)
-        # Make sure the height is such that there is something to scroll.
         scroll_menu.bind(minimum_height=scroll_menu.setter('height'))
         for i in range(100):
             btn = Button(text=str(i), size_hint_y=None, height=40)
