@@ -1,3 +1,6 @@
+from kivy.config import Config
+Config.set('graphics', 'width', '400')
+Config.set('graphics', 'height', '500')
 from kivy.app import App
 # kivy.require("1.8.0")
 from kivy.uix.button import Button
@@ -18,6 +21,7 @@ import pytesseract
 import evaluator
 
 
+passed_num = ''
 """
 MainWindow
 ---ScreenSelector
@@ -96,6 +100,7 @@ class BasicInputScreen(Screen):
         super(BasicInputScreen, self).__init__(**kwargs)
         self.name = 'basic_input'
         default = BasicInputLayout()
+        self.bind(on_pre_enter=lambda x: default.update_display())
         self.add_widget(default)
 
 
@@ -108,7 +113,7 @@ class BasicInputLayout(GridLayout):
         self.rows = 2
         self.spacing = [3, 3]
 
-        self.display = TextInput(font_size=30, size_hint=(1, 0.2))
+        self.display = TextInput(font_size=30, size_hint=(1, 0.2), readonly=True, multiline=True)
         self.add_widget(self.display)
 
         self.keypad = GridLayout(cols=4, rows=5)
@@ -129,7 +134,12 @@ class BasicInputLayout(GridLayout):
 
         self.add_widget(self.keypad)
 
+    def update_display(self):
+        global passed_num
+        self.display.text = passed_num
+
     def equate_math(self, event):
+        global passed_num
         """Takes text from button pressed and adds the text to display"""
         if self.display.text == "Invalid Input":
             self.display.text = ''
@@ -163,6 +173,7 @@ class BasicInputLayout(GridLayout):
                 self.display.text += event.text
         except SyntaxError:
             self.display.text = "Invalid Input"
+        passed_num = self.display.text
 
 
 """
@@ -179,18 +190,18 @@ class MathCharInputScreen(Screen):
         super(MathCharInputScreen, self).__init__(**kwargs)
         self.name = 'written_input'
         math_char_input_layout = MathCharInputLayout()
+        self.bind(on_pre_enter=lambda x: math_char_input_layout.math_char_input_menu.update_display())
         self.add_widget(math_char_input_layout)
 
 
 class MathCharInputLayout(RelativeLayout):
     def __init__(self, **kwargs):
         super(MathCharInputLayout, self).__init__(**kwargs)
-
         blackboard = BlackBoard()
         self.add_widget(blackboard)
 
-        math_char_input_menu = MathCharInputMenu(draw_board=blackboard)     # ObjectProperty added to pass BlackBoard in
-        self.add_widget(math_char_input_menu)
+        self.math_char_input_menu = MathCharInputMenu(draw_board=blackboard)     # ObjectProperty added to pass BlackBoard in
+        self.add_widget(self.math_char_input_menu)
 
 
 class BlackBoard(Widget):
@@ -216,7 +227,6 @@ class BlackBoard(Widget):
             except KeyError:
                 pass
 
-
     def clear_content(self):
         """Clears the canvas of all lines and marks made."""
         self.canvas.clear()
@@ -227,7 +237,7 @@ class MathCharInputMenu(BoxLayout):
 
     def __init__(self, **kwargs):
         super(MathCharInputMenu, self).__init__(**kwargs)
-        self.equation_display = TextInput(size_hint=(0.6, 0.1))
+        self.equation_display = TextInput(font_size=30, size_hint=(0.6, 0.1), readonly=True, multiline=True)
         self.spacing = [3, 3]
         self.add_widget(self.equation_display)
 
@@ -237,17 +247,24 @@ class MathCharInputMenu(BoxLayout):
         self.equate_button = Button(text='Equate', size_hint=(0.2, 0.1), on_release=self.equate_math)
         self.add_widget(self.equate_button)
 
+    def update_display(self):
+        global passed_num
+        self.equation_display.text = passed_num
+
     def equate_math(self, event):
         """Handler takes interpreted characters from display and performs the calculation."""
-        self.draw_board.clear_content()     # Clears BlackBoard instance using method.
+        global passed_num
+        self.draw_board.clear_content()    # Clears BlackBoard instance using method.
         try:
             equation_total = eval(self.equation_display.text)
             self.equation_display.text = str(equation_total)
         except SyntaxError:
             self.equation_display.text = "Invalid Input"
+        passed_num = self.equation_display.text
 
     def submit_math(self, event):
         """Handler for submit button. Converts the BlackBoard into png image to be interpreted by OCR Tesseract."""
+        global passed_num
         self.draw_board.export_to_png('im.png')
         threshold = 100
         im = Image.open('im.png').convert('L').point(lambda x: 255 if x > threshold else 0, mode='1')
@@ -259,6 +276,7 @@ class MathCharInputMenu(BoxLayout):
     config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
         new_eq = evaluator.EQ.examine(written_eq)   # Pre-processing before displayed.
         self.equation_display.text = new_eq
+        passed_num = new_eq
 
 
 """

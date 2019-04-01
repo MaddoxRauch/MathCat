@@ -1,6 +1,7 @@
 import sympy as sp
 from latex2sympy.process_latex import process_sympy
 import re
+import shelve
 
 
 class EQ:
