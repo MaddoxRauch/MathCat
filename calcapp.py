@@ -19,6 +19,7 @@ from PIL import Image
 import sympy as sp
 import pytesseract
 import evaluator
+import alignedtextinput
 
 
 passed_num = ''
@@ -113,7 +114,7 @@ class BasicInputLayout(GridLayout):
         self.rows = 2
         self.spacing = [3, 3]
 
-        self.display = TextInput(font_size=30, size_hint=(1, 0.2), readonly=True, multiline=True)
+        self.display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.2), halign='right')
         self.add_widget(self.display)
 
         self.keypad = GridLayout(cols=4, rows=5)
@@ -276,7 +277,7 @@ class MathCharInputMenu(BoxLayout):
     config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
         new_eq = evaluator.EQ.examine(written_eq)   # Pre-processing before displayed.
         self.equation_display.text = new_eq
-        passed_num = new_eq
+        passed_num = self.equation_display.text
 
 
 """
