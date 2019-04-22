@@ -15,6 +15,7 @@ from kivy.graphics import Line, Color, Rectangle
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.floatlayout import FloatLayout
 from PIL import Image
 import sympy as sp
 import pytesseract
@@ -114,21 +115,24 @@ class BasicInputLayout(GridLayout):
         self.rows = 2
         self.spacing = [3, 3]
 
-        self.display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.2), halign='right')
+        self.display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.25), halign='right',
+                                                         valign='bottom')
         self.add_widget(self.display)
 
         self.keypad = GridLayout(cols=4, rows=5)
         self.canvas.before.add(Color(0.5, 0.6, 0.6))
         self.canvas.before.add(Rectangle(pos=self.pos, size=(5000, 5000)))
         self.keypad.spacing = [2, 2]
-        button_symbols = [('CLR', 0), (str(U'\u00f7'), 0), (str(U'\u00d7'), 0), (str(U'\u21e6'), 0), ('7', 1), ('8', 1),
-                          ('9', 1), ('-', 0), ('4', 1), ('5', 1), ('6', 1), ('+', 0), ('1', 1), ('2', 1), ('3', 1),
+        button_symbols = [('CLR', 0), (str(U'\u00f7'), 2), (str(U'\u00d7'), 2), (str(U'\u21e6'), 0), ('7', 1), ('8', 1),
+                          ('9', 1), ('-', 2), ('4', 1), ('5', 1), ('6', 1), ('+', 2), ('1', 1), ('2', 1), ('3', 1),
                           ('( )', 0), ('.', 0), ('0', 1), (str(U'\u00b1'), 0), ('=', 0)]
         for button_symbol in button_symbols:
             keypad_button = Button(text=button_symbol[0], font_name='L_10646', font_size='40sp',
                                    on_press=self.equate_math)
             if button_symbol[1] == 0:
                 keypad_button.background_color = (1, 1, 1, 1)
+            elif button_symbol[1] == 2:
+                keypad_button.background_color = (0.55, 0.55, 0.6, 1)
             else:
                 keypad_button.background_color = (0.65, 0.65, 0.7, 1)
             self.keypad.add_widget(keypad_button)
@@ -146,7 +150,7 @@ class BasicInputLayout(GridLayout):
             self.display.text = ''
         try:
             if event.text == '=':
-                replacement_pairs = {'/': U'\u00f7', '*': U'\u00d7'}    # Characters that won't be recognized
+                replacement_pairs = {'/': U'\u00f7', '*': U'\u00d7'}    # Characters that won't be recognized operators
                 modified_string = str(self.display.text)
                 for k, v in replacement_pairs.items():
                     modified_string = modified_string.replace(v, k)
@@ -155,14 +159,14 @@ class BasicInputLayout(GridLayout):
                 self.display.text = str(result_total)
             elif event.text == 'CLR':
                 self.display.text = ''
-            elif event.text == str(U'\u21e6'):
+            elif event.text == str(U'\u21e6'):  # Back arrow, erases last character.
                 self.display.text = self.display.text[:-1]
-            elif event.text == str(U'\u00b1'):
+            elif event.text == str(U'\u00b1'):  # Negates the number, adds or removes minus sign.
                 if self.display.text[0] == '-':
                     self.display.text = self.display.text[1:]
                 else:
                     self.display.text = '-' + self.display.text
-            elif event.text == '( )':
+            elif event.text == '( )':   # Adds or removes parentheses to operation.
                 if self.display.text[-1] != ')' and self.display.text[1] != '(':
                     self.display.text = '(' + self.display.text + ')'
                 else:
@@ -195,22 +199,26 @@ class MathCharInputScreen(Screen):
         self.add_widget(math_char_input_layout)
 
 
-class MathCharInputLayout(RelativeLayout):
+class MathCharInputLayout(FloatLayout):
     def __init__(self, **kwargs):
         super(MathCharInputLayout, self).__init__(**kwargs)
+        self.cols = 1
+        self.rows = 2
         blackboard = BlackBoard()
-        self.add_widget(blackboard)
 
-        self.math_char_input_menu = MathCharInputMenu(draw_board=blackboard)     # ObjectProperty added to pass BlackBoard in
+        self.math_char_input_menu = MathCharInputMenu(draw_board=blackboard, size_hint=(1, 0.3), pos_hint={'top': 1})
         self.add_widget(self.math_char_input_menu)
+
+        self.add_widget(blackboard, index=1)
 
 
 class BlackBoard(Widget):
     """Class for character recognition canvas."""
     def __init__(self, **kwargs):
         super(BlackBoard, self).__init__(**kwargs)
-        self.canvas.before.add(Color(1, 0.72, 0.3))     # Orange
-        self.canvas.before.add(Rectangle(pos=self.pos, size=(5000, 5000)))
+        self.size = (5000, 5000)
+        self.canvas.before.add(Color(0.5, 0.6, 0.6))     # light blue
+        self.canvas.before.add(Rectangle(pos=self.pos, size=self.size))
 
     def on_touch_down(self, touch):
         """Selects the point on canvas for initial mark."""
@@ -233,20 +241,27 @@ class BlackBoard(Widget):
         self.canvas.clear()
 
 
-class MathCharInputMenu(BoxLayout):
+class MathCharInputMenu(GridLayout):
     draw_board = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(MathCharInputMenu, self).__init__(**kwargs)
-        self.equation_display = TextInput(font_size=30, size_hint=(0.6, 0.1), readonly=True, multiline=True)
+        self.cols = 1
+        self.rows = 2
         self.spacing = [3, 3]
+
+        self.equation_display = alignedtextinput.AlignedTextInput(font_size=30, readonly=True, halign='right',
+                                                                  valign='bottom')
         self.add_widget(self.equation_display)
+        button_container = BoxLayout(size_hint_y=0.45)
 
-        self.submit_button = Button(text='Submit', size_hint=(0.2, 0.1), on_release=self.submit_math)
-        self.add_widget(self.submit_button)
+        self.submit_button = Button(text='Submit', on_release=self.submit_math)
+        button_container.add_widget(self.submit_button)
 
-        self.equate_button = Button(text='Equate', size_hint=(0.2, 0.1), on_release=self.equate_math)
-        self.add_widget(self.equate_button)
+        self.equate_button = Button(text='Equate', on_release=self.equate_math)
+        button_container.add_widget(self.equate_button)
+
+        self.add_widget(button_container)
 
     def update_display(self):
         global passed_num
@@ -274,7 +289,7 @@ class MathCharInputMenu(BoxLayout):
         new_im = Image.open('new_im.jpg')
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
         written_eq = pytesseract.image_to_string(new_im, lang="eng",
-    config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
+config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
         new_eq = evaluator.EQ.examine(written_eq)   # Pre-processing before displayed.
         self.equation_display.text = new_eq
         passed_num = self.equation_display.text

@@ -1,6 +1,7 @@
 from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty
 import functools
+import operator
 
 DEFAULT_PADDING = 6
 
@@ -30,9 +31,10 @@ class AlignedTextInput(TextInput):
         """
         self._refresh_text(self.text)
 
-        total_size = (x.size for x in self._lines_rects)    # Modified to handle runtime dynamic on_text
-        max_size = functools.reduce(lambda x, y: [x[0]+y[0], x[1]+y[1]], total_size)
-        num_lines = len(self._lines_rects)
+        total_size = [x.size for x in self._lines_rects]  # Modified to handle runtime dynamic on_text
+        max_size = functools.reduce(lambda x, y: (x[0]+y[0], x[1]), total_size)
+        num_lines = 1   #len(self._lines_rects)
+        print(max_size, num_lines)
 
         px = [DEFAULT_PADDING, DEFAULT_PADDING]
         py = [DEFAULT_PADDING, DEFAULT_PADDING]
