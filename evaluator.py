@@ -7,7 +7,7 @@ class EQ:
     @staticmethod
     def examine(input_line):
         i = input_line
-        j = re.sub(r'\s', '', i)
+        j = re.sub(r'\s', '', i)    # gets rid of white space
         return j
 
 

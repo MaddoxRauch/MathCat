@@ -6,7 +6,6 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.textinput import TextInput
 from kivy.uix.dropdown import DropDown
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
@@ -14,16 +13,16 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Line, Color, Rectangle
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.floatlayout import FloatLayout
 from PIL import Image
 import sympy as sp
 import pytesseract
 import evaluator
 import alignedtextinput
+import multiexpressionbutton
 
-
-passed_num = ''
+top_passed_num = ''
+bot_passed_num = ''
 """
 MainWindow
 ---ScreenSelector
@@ -40,8 +39,8 @@ class MainWindow(GridLayout):
         self.cols = 1
         self.rows = 2
         self.calc_type_selection = ScreenSelector()
-        self.calc_type_menu = MainMenu(screen_manager=self.calc_type_selection, text='Basic', font_size='50sp',
-                                       size_hint=(1, 0.2), background_color=(0.5, 0.7, 0.8, 1))
+        self.calc_type_menu = MainMenu(screen_manager=self.calc_type_selection, text='Basic', font_size='40sp',
+                                       size_hint=(1, 0.15), background_color=(0.5, 0.7, 0.8, 1))
         self.add_widget(self.calc_type_selection)
         self.add_widget(self.calc_type_menu)
 
@@ -51,10 +50,10 @@ class ScreenSelector(ScreenManager):
     def __init__(self, **kwargs):
         super(ScreenSelector, self).__init__(**kwargs)
         self.transition = FadeTransition()
-        basic_input_screen = BasicInputScreen()    # Loads basic input screen into screen manager. Number 1 in menu.
+        basic_input_screen = BasicInputScreen()    # Loads basic input screen into screen manager.
         self.add_widget(basic_input_screen)
 
-        math_char_input_screen = MathCharInputScreen()  # Loads math OCR screen into screen manager. Number 2 in menu.
+        math_char_input_screen = MathCharInputScreen()  # Loads math OCR screen into screen manager.
         self.add_widget(math_char_input_screen)
 
         equation_input_screen = EquationInputScreen()   # Loads equation database
@@ -72,7 +71,7 @@ class MainMenu(Button):
         self.drop_list = DropDown()
         types = ['Basic', 'Write', 'Equations']    # We have three main screens. May need to add a 'Graph' screen.
         for i in types:
-            button = Button(text=i, font_size="50sp", size_hint_y=None, height="80sp",
+            button = Button(text=i, font_size="40sp", size_hint_y=None, height="60sp",
                             background_color=(0.6, 0.8, 0.9, 1))
             button.bind(on_release=lambda btn: self.drop_list.select(btn.text))
             self.drop_list.add_widget(button)
@@ -80,7 +79,7 @@ class MainMenu(Button):
         self.drop_list.bind(on_select=lambda instance, x: setattr(self, 'text', x))
         self.drop_list.bind(on_select=self.menu_selection)
 
-    def menu_selection(self, event, x):
+    def menu_selection(self, instance, x):
         """Drop-list selection changes to one of three screens"""
         if x == 'Basic':
             self.screen_manager.current = 'basic_input'
@@ -112,23 +111,31 @@ class BasicInputLayout(GridLayout):
         super(BasicInputLayout, self).__init__(**kwargs)
 
         self.cols = 1
-        self.rows = 2
-        self.spacing = [3, 3]
+        self.rows = 3
+        self.top_basic_eq_display = alignedtextinput.AlignedTextInput(font_size=24, size_hint=(1, 0.15), halign='right',
+                                                                      valign='bottom',
+                                                                      foreground_color=(0.25, 0.25, 0.25, 1))
+        self.add_widget(self.top_basic_eq_display)
+        self.bot_basic_eq_display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.15), halign='right',
+                                                                      valign='bottom')
+        self.add_widget(self.bot_basic_eq_display)
 
-        self.display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.25), halign='right',
-                                                         valign='bottom')
-        self.add_widget(self.display)
-
-        self.keypad = GridLayout(cols=4, rows=5)
+        self.keypad = GridLayout(cols=4, rows=6)
         self.canvas.before.add(Color(0.5, 0.6, 0.6))
         self.canvas.before.add(Rectangle(pos=self.pos, size=(5000, 5000)))
         self.keypad.spacing = [2, 2]
-        button_symbols = [('CLR', 0), (str(U'\u00f7'), 2), (str(U'\u00d7'), 2), (str(U'\u21e6'), 0), ('7', 1), ('8', 1),
-                          ('9', 1), ('-', 2), ('4', 1), ('5', 1), ('6', 1), ('+', 2), ('1', 1), ('2', 1), ('3', 1),
-                          ('( )', 0), ('.', 0), ('0', 1), (str(U'\u00b1'), 0), ('=', 0)]
+        button_symbols = [(str(U'\u0025'), 0), (str(U'\u221a'), 0), ('x' + str(U'\u00b2'), 0), (str(U'\u00b9') + '/x', 0),
+                          ('CE', 0), ('C', 0), (str(U'\u21e6'), 0), (str(U'\u00f7'), 1),
+                          ('7', 2), ('8', 2), ('9', 2), (str(U'\u00d7'), 1),
+                          ('4', 2), ('5', 2), ('6', 2), ('-', 1),
+                          ('1', 2), ('2', 2), ('3', 2), ('+', 1),
+                          (str(U'\u00b1'), 2), ('0', 2), ('.', 2), ('=', 1)]
         for button_symbol in button_symbols:
-            keypad_button = Button(text=button_symbol[0], font_name='L_10646', font_size='40sp',
-                                   on_press=self.equate_math)
+            keypad_button = multiexpressionbutton.MultiExpressionButton(text=button_symbol[0], font_name='L_10646',
+                                                                        font_size='40sp')
+            keypad_button.bind(on_single_press=self.equate_math)
+            keypad_button.bind(on_double_press=self.equate_math)
+            keypad_button.bind(on_long_press=self.change_symbol)
             if button_symbol[1] == 0:
                 keypad_button.background_color = (1, 1, 1, 1)
             elif button_symbol[1] == 2:
@@ -140,45 +147,121 @@ class BasicInputLayout(GridLayout):
         self.add_widget(self.keypad)
 
     def update_display(self):
-        global passed_num
-        self.display.text = passed_num
+        global top_passed_num
+        global bot_passed_num
+        self.top_basic_eq_display.text = top_passed_num
+        self.bot_basic_eq_display.text = bot_passed_num
 
-    def equate_math(self, event):
-        global passed_num
+    def change_symbol(self, instance):
+        numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        symbols = [str(U'\u00f7'), str(U'\u00d7'), '-', '+']
+        if self.bot_basic_eq_display.text == '':
+            self.equate_math(instance)
+        elif instance.text in numbers:
+            self.bot_basic_eq_display.text = self.bot_basic_eq_display.text[:-1] + instance.text
+        elif instance.text in symbols:
+            self.bot_basic_eq_display.text = instance.text + self.bot_basic_eq_display.text[1:]
+        else:
+            self.equate_math(instance)
+
+    def equate_math(self, instance):
+        global top_passed_num
+        global bot_passed_num
         """Takes text from button pressed and adds the text to display"""
-        if self.display.text == "Invalid Input":
-            self.display.text = ''
+        if self.bot_basic_eq_display.text in ("Invalid Input", "Must Insert Number First"):
+            self.bot_basic_eq_display.text = ''
         try:
-            if event.text == '=':
-                replacement_pairs = {'/': U'\u00f7', '*': U'\u00d7'}    # Characters that won't be recognized operators
-                modified_string = str(self.display.text)
-                for k, v in replacement_pairs.items():
-                    modified_string = modified_string.replace(v, k)
-                equation_total = sp.sympify(modified_string)
-                result_total = sp.pretty(sp.latex(equation_total.evalf()))
-                self.display.text = str(result_total)
-            elif event.text == 'CLR':
-                self.display.text = ''
-            elif event.text == str(U'\u21e6'):  # Back arrow, erases last character.
-                self.display.text = self.display.text[:-1]
-            elif event.text == str(U'\u00b1'):  # Negates the number, adds or removes minus sign.
-                if self.display.text[0] == '-':
-                    self.display.text = self.display.text[1:]
-                else:
-                    self.display.text = '-' + self.display.text
-            elif event.text == '( )':   # Adds or removes parentheses to operation.
-                if self.display.text[-1] != ')' and self.display.text[1] != '(':
-                    self.display.text = '(' + self.display.text + ')'
-                else:
-                    self.display.text = self.display.text[1:-1]
-            elif event.text == '.':
-                if '.' not in self.display.text:
-                    self.display.text += event.text
+            if instance.text == '=':
+                equation = self.top_basic_eq_display.text + self.bot_basic_eq_display.text
+                self.top_basic_eq_display.text = self.solver(equation)
+                self.bot_basic_eq_display.text = ''
+
+            elif instance.text == U'\u0025':    # Percentage sign
+                if len(self.top_basic_eq_display.text) != 0:
+                    equation = self.top_basic_eq_display.text + '*0.01'
+                    self.top_basic_eq_display.text = self.solver(equation)
+
+            elif instance.text == U'\u00f7':    # Division sign
+                self.operator(instance)
+
+            elif instance.text == U'\u00d7':    # Multiplication sign
+                self.operator(instance)
+
+            elif instance.text == '+':
+                self.operator(instance)
+
+            elif instance.text == '-':
+                self.operator(instance)
+
+            elif instance.text == 'C':
+                self.bot_basic_eq_display.text = ''
+
+            elif instance.text == 'CE':
+                self.top_basic_eq_display.text = ''
+                self.bot_basic_eq_display.text = ''
+
+            elif instance.text == str(U'\u21e6'):  # Back arrow, erases last character.
+                self.bot_basic_eq_display.text = self.bot_basic_eq_display.text[:-1]
+
+            elif instance.text == str(U'\u00b1'):  # Negates the number, adds or removes minus sign.
+                if self.bot_basic_eq_display.text:
+                    if '-' in self.bot_basic_eq_display.text:
+                        if U'\u00f7' in self.bot_basic_eq_display.text or U'\u00d7' in self.bot_basic_eq_display.text \
+                                or '+' in self.bot_basic_eq_display.text:
+                            self.bot_basic_eq_display.text = self.bot_basic_eq_display.text[0] + \
+                                                             self.bot_basic_eq_display.text[2:]
+                        else:
+                            self.bot_basic_eq_display.text = self.bot_basic_eq_display.text[1:]
+                    else:
+                        if U'\u00f7' in self.bot_basic_eq_display.text or U'\u00d7' in self.bot_basic_eq_display.text \
+                                or '+' in self.bot_basic_eq_display.text:
+                            self.bot_basic_eq_display.text = self.bot_basic_eq_display.text[0] + '-' + \
+                                                            self.bot_basic_eq_display.text[1:]
+                        else:
+                            self.bot_basic_eq_display.text = '-' + self.bot_basic_eq_display.text
+
+            elif instance.text == '.':
+                if '.' not in self.bot_basic_eq_display.text:
+                    self.bot_basic_eq_display.text += instance.text
+
             else:
-                self.display.text += event.text
+                self.number(instance)
+
         except SyntaxError:
-            self.display.text = "Invalid Input"
-        passed_num = self.display.text
+            self.bot_basic_eq_display.text = "Invalid Input"
+        top_passed_num = self.top_basic_eq_display.text
+        bot_passed_num = self.bot_basic_eq_display.text
+
+    def solver(self, equation):
+        replacement_pairs = {'/': U'\u00f7', '*': U'\u00d7'}  # Characters that won't be recognized operators
+        for k, v in replacement_pairs.items():
+            equation = equation.replace(v, k)
+        equation_total = sp.sympify(equation)
+        result_total = sp.pretty(sp.latex(equation_total.evalf()))
+        return str(result_total)
+
+    def number(self, instance):
+        self.bot_basic_eq_display.text += instance.text
+
+    def operator(self, instance):
+        if len(self.top_basic_eq_display.text) == 0 and len(self.bot_basic_eq_display.text) == 0:
+            self.bot_basic_eq_display.text = "Must Insert Number First"
+        elif len(self.bot_basic_eq_display.text) != 0 and len(self.top_basic_eq_display.text) == 0:
+            self.top_basic_eq_display.text = self.bot_basic_eq_display.text
+            self.bot_basic_eq_display.text = instance.text
+        elif len(self.top_basic_eq_display.text) != 0 and len(self.bot_basic_eq_display.text) == 0:
+            self.bot_basic_eq_display.text = instance.text
+        elif self.bot_basic_eq_display.text == instance.text and len(self.top_basic_eq_display.text) != 0:
+            equation = self.top_basic_eq_display.text + instance.text + self.top_basic_eq_display.text
+            self.top_basic_eq_display.text = self.solver(equation)
+        elif len(self.bot_basic_eq_display.text) != 0 and len(self.top_basic_eq_display.text) != 0:
+            if U'\u00f7' in self.bot_basic_eq_display.text or U'\u00d7' in self.bot_basic_eq_display.text \
+                    or '+' in self.bot_basic_eq_display.text or '-' in self.bot_basic_eq_display.text:
+                equation = self.top_basic_eq_display.text + self.bot_basic_eq_display.text
+                self.top_basic_eq_display.text = self.solver(equation)
+                self.bot_basic_eq_display.text = instance.text
+            else:
+                self.bot_basic_eq_display.text = instance.text + self.bot_basic_eq_display.text
 
 
 """
@@ -247,13 +330,16 @@ class MathCharInputMenu(GridLayout):
     def __init__(self, **kwargs):
         super(MathCharInputMenu, self).__init__(**kwargs)
         self.cols = 1
-        self.rows = 2
-        self.spacing = [3, 3]
+        self.rows = 3
+        self.top_char_eq_display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.5), halign='right',
+                                                                     valign='bottom',
+                                                                     foreground_color=(0.25, 0.25, 0.25, 1))
+        self.add_widget(self.top_char_eq_display)
 
-        self.equation_display = alignedtextinput.AlignedTextInput(font_size=30, readonly=True, halign='right',
-                                                                  valign='bottom')
-        self.add_widget(self.equation_display)
-        button_container = BoxLayout(size_hint_y=0.45)
+        self.bot_char_eq_display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.5), halign='right',
+                                                                     valign='bottom')
+        self.add_widget(self.bot_char_eq_display)
+        button_container = BoxLayout(size_hint_y=0.40)
 
         self.submit_button = Button(text='Submit', on_release=self.submit_math)
         button_container.add_widget(self.submit_button)
@@ -264,23 +350,28 @@ class MathCharInputMenu(GridLayout):
         self.add_widget(button_container)
 
     def update_display(self):
-        global passed_num
-        self.equation_display.text = passed_num
+        global top_passed_num
+        global bot_passed_num
+        self.top_char_eq_display.text = top_passed_num
+        self.bot_char_eq_display.text = bot_passed_num
 
     def equate_math(self, event):
         """Handler takes interpreted characters from display and performs the calculation."""
-        global passed_num
+        global top_passed_num
+        global bot_passed_num
         self.draw_board.clear_content()    # Clears BlackBoard instance using method.
         try:
-            equation_total = eval(self.equation_display.text)
-            self.equation_display.text = str(equation_total)
+            equation_total = eval(self.bot_char_eq_display.text)
+            self.bot_char_eq_display.text = str(equation_total)
         except SyntaxError:
-            self.equation_display.text = "Invalid Input"
-        passed_num = self.equation_display.text
+            self.bot_char_eq_display.text = "Invalid Input"
+        top_passed_num = self.top_char_eq_display.text
+        bot_passed_num = self.bot_char_eq_display.text
 
     def submit_math(self, event):
         """Handler for submit button. Converts the BlackBoard into png image to be interpreted by OCR Tesseract."""
-        global passed_num
+        global top_passed_num
+        global bot_passed_num
         self.draw_board.export_to_png('im.png')
         threshold = 100
         im = Image.open('im.png').convert('L').point(lambda x: 255 if x > threshold else 0, mode='1')
@@ -291,8 +382,9 @@ class MathCharInputMenu(GridLayout):
         written_eq = pytesseract.image_to_string(new_im, lang="eng",
 config="--oem 0 --psm 8 -c tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
         new_eq = evaluator.EQ.examine(written_eq)   # Pre-processing before displayed.
-        self.equation_display.text = new_eq
-        passed_num = self.equation_display.text
+        self.bot_char_eq_display.text = new_eq
+        top_passed_num = self.top_char_eq_display.text
+        bot_passed_num = self.bot_char_eq_display.text
 
 
 """

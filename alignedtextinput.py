@@ -1,7 +1,7 @@
 from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty
 import functools
-import operator
+import re
 
 DEFAULT_PADDING = 6
 
@@ -9,6 +9,15 @@ DEFAULT_PADDING = 6
 class AlignedTextInput(TextInput):
     halign = StringProperty('left')
     valign = StringProperty('top')
+    pat = re.compile(r'[^\u00f7\u00d7+0-9]')
+
+    def insert_text(self, substring, from_undo=False):
+        pat = self.pat
+        if '.' in self.text:
+            s = re.sub(pat, '', substring)
+        else:
+            s = '.'.join([re.sub(pat, '', s) for s in substring.split('.', 1)])
+        return super(AlignedTextInput, self).insert_text(s, from_undo=from_undo)
 
     def __init__(self, **kwargs):
         self.halign = kwargs.get("halign", "left")
@@ -34,7 +43,6 @@ class AlignedTextInput(TextInput):
         total_size = [x.size for x in self._lines_rects]  # Modified to handle runtime dynamic on_text
         max_size = functools.reduce(lambda x, y: (x[0]+y[0], x[1]), total_size)
         num_lines = 1   #len(self._lines_rects)
-        print(max_size, num_lines)
 
         px = [DEFAULT_PADDING, DEFAULT_PADDING]
         py = [DEFAULT_PADDING, DEFAULT_PADDING]
