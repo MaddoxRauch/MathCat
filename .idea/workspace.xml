@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7696acba-2689-4246-9cc1-df8806302f12" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/multiexpressionbutton.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alignedtextinput.py" beforeDir="false" afterPath="$PROJECT_DIR$/alignedtextinput.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/calcapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/calcapp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluator.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluator.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/im.png" beforeDir="false" afterPath="$PROJECT_DIR$/im.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/new_im.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/new_im.jpg" afterDir="false" />
     </list>
@@ -24,11 +22,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/calcapp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-210">
-              <caret line="244" lean-forward="true" selection-start-line="244" selection-end-line="244" />
+            <state relative-caret-position="220">
+              <caret line="206" column="68" selection-start-line="206" selection-start-column="68" selection-end-line="206" selection-end-column="68" />
               <folding>
-                <marker date="1566800146051" expanded="true" signature="771:812" ph="..." />
+                <marker date="1566967773833" expanded="true" signature="764:805" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/kivy/uix/textinput.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="2979" column="48" lean-forward="true" selection-start-line="2979" selection-start-column="48" selection-end-line="2979" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -63,10 +70,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="85" />
-    <option name="y" value="31" />
-    <option name="width" value="1848" />
-    <option name="height" value="1050" />
+    <option name="x" value="583" />
+    <option name="y" value="9" />
+    <option name="width" value="1302" />
+    <option name="height" value="1020" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -76,6 +83,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -87,7 +95,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Course" />
     </panes>
   </component>
@@ -286,8 +293,8 @@
       <window_info id="Structure" order="1" sideWeight="0.5035587" side_tool="true" weight="0.13036565" />
       <window_info id="Favorites" order="2" sideWeight="0.5035587" side_tool="true" weight="0.13036565" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49682036" visible="true" weight="0.26512456" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.42348754" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49682036" visible="true" weight="0.2580071" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5177936" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -374,9 +381,6 @@
     <entry file="file://$PROJECT_DIR$/rgb_im.jpg" />
     <entry file="file://$PROJECT_DIR$/large_im.png" />
     <entry file="file://$PROJECT_DIR$/new_im.png" />
-    <entry file="file://$PROJECT_DIR$/OCR_TEST.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/latex2sympy/process_latex.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -387,21 +391,10 @@
     <entry file="file://$PROJECT_DIR$/venv/pip-selfcheck.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/kivy/uix/widget.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="483" lean-forward="true" selection-start-line="483" selection-end-line="483" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/kivy/uix/textinput.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="872">
-          <caret line="1888" column="79" lean-forward="true" selection-start-line="1888" selection-start-column="79" selection-end-line="1888" selection-end-column="79" />
         </state>
       </provider>
     </entry>
@@ -443,16 +436,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/multiexpressionbutton.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -463,12 +446,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OCR_TEST.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/kivy/uix/textinput.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="2979" column="48" lean-forward="true" selection-start-line="2979" selection-start-column="48" selection-end-line="2979" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/calcapp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-210">
-          <caret line="244" lean-forward="true" selection-start-line="244" selection-end-line="244" />
+        <state relative-caret-position="220">
+          <caret line="206" column="68" selection-start-line="206" selection-start-column="68" selection-end-line="206" selection-end-column="68" />
           <folding>
-            <marker date="1566800146051" expanded="true" signature="771:812" ph="..." />
+            <marker date="1566967773833" expanded="true" signature="764:805" ph="..." />
           </folding>
         </state>
       </provider>
