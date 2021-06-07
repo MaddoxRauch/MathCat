@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="74">
+          <list size="80">
             <item index="0" class="java.lang.String" itemvalue="traitlets" />
             <item index="1" class="java.lang.String" itemvalue="tzlocal" />
             <item index="2" class="java.lang.String" itemvalue="pywinpty" />
@@ -79,6 +79,12 @@
             <item index="71" class="java.lang.String" itemvalue="pytz" />
             <item index="72" class="java.lang.String" itemvalue="webencodings" />
             <item index="73" class="java.lang.String" itemvalue="antlr4-python3-runtime" />
+            <item index="74" class="java.lang.String" itemvalue="kivy.deps.sdl2" />
+            <item index="75" class="java.lang.String" itemvalue="kivy" />
+            <item index="76" class="java.lang.String" itemvalue="Pillow" />
+            <item index="77" class="java.lang.String" itemvalue="pytesseract" />
+            <item index="78" class="java.lang.String" itemvalue="latex2sympy3" />
+            <item index="79" class="java.lang.String" itemvalue="sympy" />
           </list>
         </value>
       </option>

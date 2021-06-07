@@ -56,9 +56,6 @@ class ScreenSelector(ScreenManager):
         math_char_input_screen = MathCharInputScreen()  # Loads math OCR screen into screen manager.
         self.add_widget(math_char_input_screen)
 
-        equation_input_screen = EquationInputScreen()   # Loads equation database
-        self.add_widget(equation_input_screen)
-
         self.current = 'basic_input'
 
 
@@ -69,7 +66,7 @@ class MainMenu(Button):
     def __init__(self, **kwargs):
         super(MainMenu, self).__init__(**kwargs)
         self.drop_list = DropDown()
-        types = ['Basic', 'Write', 'Equations']    # We have three main screens. May need to add a 'Graph' screen.
+        types = ['Basic', 'Write']    # We have two main screens. May need to add a 'Graph' and 'Equations' screen.
         for i in types:
             button = Button(text=i, font_size="40sp", size_hint_y=None, height="60sp",
                             background_color=(0.6, 0.8, 0.9, 1))
@@ -85,8 +82,6 @@ class MainMenu(Button):
             self.screen_manager.current = 'basic_input'
         elif x == 'Write':
             self.screen_manager.current = 'written_input'
-        else:
-            self.screen_manager.current = 'equation_input'
 
 
 """
@@ -197,7 +192,7 @@ class BasicInputLayout(GridLayout):
 
             elif instance.text == 'x' + U'\u00b2':    # Square sign
                 if len(self.bot_basic_eq_display.text) != 0:
-                    equation = self.bot_basic_eq_display.text + '^2'
+                    equation = self.bot_basic_eq_display.text + '**2'
                     self.top_basic_eq_display.text = self.solver(equation)
                     self.bot_basic_eq_display.text = ''
                     self.operated_state = True
@@ -260,7 +255,7 @@ class BasicInputLayout(GridLayout):
         try:
             for k, v in replacement_pairs.items():
                 equation = equation.replace(v, k)
-            equation_pattern = re.compile('^\-?\d+\.?\d*[\+\-*/]{1}\-?\d+\.?\d*$')
+            equation_pattern = re.compile('^(\-?\d+\.?\d*[+\-*/]{1})|(sqrt\()\-?\d+\.?\d*(\))+|(\*\*2)+$')
             result = equation_pattern.match(equation)
             if result:
                 equation_total = sp.sympify(equation)
@@ -276,7 +271,8 @@ class BasicInputLayout(GridLayout):
         if self.operated_state is True or len(self.top_basic_eq_display.text) == 0:
             self.bot_basic_eq_display.text += instance.text
         else:
-            self.bot_basic_eq_display.text = "Invalid Input"
+            self.top_basic_eq_display.text = ""
+            self.bot_basic_eq_display.text = instance.text
 
     def operator(self, instance):
         if self.operated_state:
@@ -339,7 +335,7 @@ class BlackBoard(Widget):
         with self.canvas:
             Color(0.25, 0.28, 0.28)
             if self.collide_point(*touch.pos):
-                touch.ud["line"] = Line(points=(touch.x, touch.y), width=2)
+                touch.ud["line"] = Line(points=(touch.x, touch.y), width=4)
 
     def on_touch_move(self, touch):
         """Continues the line from the initial mark made on_touch_down"""
@@ -364,7 +360,7 @@ class MathCharInputMenu(GridLayout):
         self.rows = 3
         self.top_char_eq_display = alignedtextinput.AlignedTextInput(font_size=24, size_hint=(1, 0.5), halign='right',
                                                                      valign='bottom',
-                                                                     foreground_color=(0.25, 0.25, 0.25, 1))
+                                                                     foreground_color=(0.0, 0.0, 0.0, 1))
         self.add_widget(self.top_char_eq_display)
 
         self.bot_char_eq_display = alignedtextinput.AlignedTextInput(font_size=30, size_hint=(1, 0.5), halign='right',
@@ -407,13 +403,11 @@ class MathCharInputMenu(GridLayout):
         threshold = 100
         im = Image.open('im.png').convert('L').point(lambda x: 255 if x > threshold else 0, mode='1')
         rgb_im = im.convert('RGB')
-        rgb_im.save('new_im.jpg', dpi=(500, 500))
+        rgb_im.save('new_im.jpg', dpi=(5000, 5000))
         new_im = Image.open('new_im.jpg')
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
-        written_eq = pytesseract.image_to_string(\
-            new_im, lang="equ", config="--oem 0 --psm 8 -c \
-            tessedit_char_blacklist=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz \
-            tessedit_char_whitelist=0123456789*/+-")
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+        written_eq = pytesseract.image_to_string(new_im, lang="eng", config="--psm 8 -c tessedit_char_blacklist=|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz tessedit_char_whitelist=0123456789*/+-")
+        print(written_eq)
         self.bot_char_eq_display.text = written_eq
         top_passed_num = self.top_char_eq_display.text
         bot_passed_num = self.bot_char_eq_display.text
