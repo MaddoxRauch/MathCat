@@ -24,9 +24,9 @@ There are other ways to get and install tesseract, but the Mannheim is the easie
 <table cellpadding="0" cellspacing="0">
   <tbody>
     <tr>
-      <td align="center"><img src='Screenshot (11).png' width="50%" height="50%"></td>
-      <td align="center"><img src='Screenshot (10).png' width="50%" height="50%"></td>
-    </tr>
+      <td align="center"><img src='Screenshot (11).png' width="100%" height="50%"></td>
+      <td align="center"><img src='Screenshot (10).png' width="100%" height="50%"></td>
+  </t>
   </tbody>
 </table>
 </html>
